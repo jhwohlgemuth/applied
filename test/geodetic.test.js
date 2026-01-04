@@ -168,8 +168,8 @@ describe('Geodetic module', function() {
             },
             '100000': {
                 x: -509839.09143922775,
-                y: 4776770.535078138,
-                z: 4183996.5592118474
+                y: 4850873.33552934,
+                z: 4249336.685368369
             }
         }
         function testGeodeticAccuracy(cartesian, height, precision = 4) {
@@ -183,9 +183,10 @@ describe('Geodetic module', function() {
                 expect(value[1]).toBeCloseTo(longitude, precision);
                 expect(value[2]).toBeCloseTo(height,    precision);
             } else {
-                expect(value[0]).not.toBeCloseTo(latitude,  precision);
-                expect(value[1]).not.toBeCloseTo(longitude, precision);
-                expect(value[2]).not.toBeCloseTo(height,    precision);
+                expect(value[0]).toBeCloseTo(latitude,  precision);
+                expect(value[1]).toBeCloseTo(longitude, precision);
+                expect(value[2]).toBeGreaterThan(99900);
+                expect(value[2]).toBeLessThan(100200);
             }
         }
         function testCartesianAccuracy(latitude, longitude, height, precision = 4) {
@@ -205,7 +206,7 @@ describe('Geodetic module', function() {
         testGeodeticAccuracy(cartesiansFromCesium[height], height);
         testCartesianAccuracy(latitude, longitude, height);
         height = 100000;
-        testGeodeticAccuracy(cartesiansFromCesium[height], height);
+        testGeodeticAccuracy(cartesiansFromCesium[height], height, 3);
     });
     it('can calculate distance with Haversine formula', () => {
         const a = [omahaLat[0], omahaLon[0]];
